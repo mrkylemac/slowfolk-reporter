@@ -56,22 +56,33 @@
 /* App semantic layer, pointed at the palette. The names are the ones the
    components already use (bg-gray-1, text-fg-4, border-gray-2 ...). */
 :root {
-  --ground: var(--sf-bone);                /* page ground */
-  --background: var(--sf-base-white);      /* surface: cards, controls, overlays */
+  --ground: var(--sf-bone);
+  /* page ground */
+  --background: var(--sf-base-white);
+  /* surface: cards, controls, overlays */
   --bg-1: var(--sf-base-white);
-  --bg-2: var(--sf-base-20);               /* muted tracks */
-  --bg-3: var(--sf-base-40);               /* skeleton sweep highlight */
-  --fg-3: var(--sf-brown-60);              /* secondary text: labels and captions only */
-  --fg-4: var(--sf-base-black);            /* strongest text: titles, values */
-  --gray-1: var(--sf-bone-60);             /* inset and KPI fill */
-  --gray-2: var(--sf-brown-40);            /* hairline */
+  --bg-2: var(--sf-base-20);
+  /* muted tracks */
+  --bg-3: var(--sf-base-40);
+  /* skeleton sweep highlight */
+  --fg-3: var(--sf-brown-60);
+  /* secondary text: labels and captions only */
+  --fg-4: var(--sf-base-black);
+  /* strongest text: titles, values */
+  --gray-1: var(--sf-bone-60);
+  /* inset and KPI fill */
+  --gray-2: var(--sf-brown-40);
+  /* hairline */
   --gray-3: var(--sf-brown-60);
   --gray-4: var(--sf-brown-80);
   --gray-a1: #00000008;
   --gray-a2: #0000001a;
-  --label: var(--sf-brown-80);             /* eyebrow CAPS, section labels */
-  --highlight: var(--sf-brand-red);        /* the single highlight */
-  --overlay: color-mix(in srgb, var(--sf-base-black) 55%, transparent); /* dialog scrim */
+  --label: var(--sf-brown-80);
+  /* eyebrow CAPS, section labels */
+  --highlight: var(--sf-brand-red);
+  /* the single highlight */
+  --overlay: color-mix(in srgb, var(--sf-base-black) 55%, transparent);
+  /* dialog scrim */
 
   /* Chart series palette. Chart only exception (decision of 2026-09-27):
      series colours stay as they were; chart chrome uses brand tokens.
@@ -92,13 +103,15 @@
   --card-foreground: var(--sf-brown-85);
   --popover: var(--sf-base-white);
   --popover-foreground: var(--sf-brown-85);
-  --foreground: var(--sf-brown-85);        /* body reading colour, 4.93:1 on Bone */
+  --foreground: var(--sf-brown-85);
+  /* body reading colour, 4.93:1 on Bone */
   --primary: var(--sf-brown-80);
   --primary-foreground: var(--sf-bone);
   --secondary: var(--sf-base-20);
   --secondary-foreground: var(--sf-base-black);
   --muted: var(--sf-base-20);
-  --muted-foreground: var(--sf-brown-60);  /* 2.71:1 on Bone: labels and captions, never a sentence */
+  --muted-foreground: var(--sf-brown-60);
+  /* 2.71:1 on Bone: labels and captions, never a sentence */
   --accent: var(--sf-bone-60);
   --accent-foreground: var(--sf-base-black);
   --destructive: var(--sf-brand-red);
@@ -259,13 +272,16 @@
     background-color: var(--ground);
     color: var(--foreground);
     font-family: var(--font-body);
+    font-variation-settings: "BULL" 0, "MONO" 0;
     font-synthesis: none;
-    font-variation-settings: "BULL" 0; /* the Plain cut */
     @apply antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     color: var(--fg-4);
   }
 }
@@ -295,8 +311,15 @@
 }
 
 @keyframes section-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .section-animate {
@@ -304,42 +327,46 @@
 }
 
 @keyframes shimmer-glare {
-  0% { mask-position: 200% center; }
-  100% { mask-position: -50% center; }
+  0% {
+    mask-position: 200% center;
+  }
+
+  100% {
+    mask-position: -50% center;
+  }
 }
 
 @utility text-shimmer {
   color: var(--muted-foreground);
-  mask-image: linear-gradient(
-    110deg,
-    rgba(0,0,0,1) 30%,
-    rgba(0,0,0,0.3) 50%,
-    rgba(0,0,0,1) 70%
-  );
+  mask-image: linear-gradient(110deg,
+      rgba(0, 0, 0, 1) 30%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 1) 70%);
   mask-size: 200% 100%;
-  -webkit-mask-image: linear-gradient(
-    110deg,
-    rgba(0,0,0,1) 30%,
-    rgba(0,0,0,0.3) 50%,
-    rgba(0,0,0,1) 70%
-  );
+  -webkit-mask-image: linear-gradient(110deg,
+      rgba(0, 0, 0, 1) 30%,
+      rgba(0, 0, 0, 0.3) 50%,
+      rgba(0, 0, 0, 1) 70%);
   -webkit-mask-size: 200% 100%;
   animation: shimmer-glare 2.5s ease-in-out infinite;
 }
 
 /* Skeleton shimmer bar: a soft left to right highlight sweep */
 @keyframes skeleton-sweep {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .skeleton-bar {
-  background: linear-gradient(
-    90deg,
-    var(--bg-2) 25%,
-    var(--bg-3) 50%,
-    var(--bg-2) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--bg-2) 25%,
+      var(--bg-3) 50%,
+      var(--bg-2) 75%);
   background-size: 200% 100%;
   animation: skeleton-sweep 1.8s ease-in-out infinite;
   border-radius: var(--radius-md);
@@ -347,8 +374,15 @@
 
 /* Gentle pulse for interactive elements that are loading */
 @keyframes soft-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.55; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
 }
 
 .loading-pulse {
@@ -356,11 +390,31 @@
 }
 
 @media print {
-  .print\:hidden { display: none !important; }
-  body, .min-h-screen { background: white !important; color: black !important; }
-  [class*="shadow"] { box-shadow: none !important; }
-  .print-section { page-break-inside: avoid; break-inside: avoid; }
-  .recharts-text { fill: #333 !important; }
+  .print\:hidden {
+    display: none !important;
+  }
+
+  body,
+  .min-h-screen {
+    background: white !important;
+    color: black !important;
+  }
+
+  [class*="shadow"] {
+    box-shadow: none !important;
+  }
+
+  .print-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .recharts-text {
+    fill: #333 !important;
+  }
+
   .recharts-cartesian-grid-horizontal line,
-  .recharts-cartesian-grid-vertical line { stroke: #ddd !important; }
+  .recharts-cartesian-grid-vertical line {
+    stroke: #ddd !important;
+  }
 }
