@@ -87,7 +87,7 @@
   --blur-xl: 24px;
   --blur-2xl: 40px;
 
-  /* Shadows: none. The brand separates surfaces with a 1px Brown/40
+  /* Shadows: none. The brand separates surfaces with a 1px Base/40
      hairline or a dotted rule, never a shadow. Every key is a transparent
      zero shadow rather than `none` because Tailwind v4 composes box-shadow
      from several layers. Existing shadow-* classes therefore render nothing. */

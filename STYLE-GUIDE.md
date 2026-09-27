@@ -89,7 +89,7 @@ All colours live in `src/styles/globals.css`. The chain is:
 ```
 Figma variable  -->  --sf-* (palette block)  -->  semantic token  -->  Tailwind utility
 Bone #eeede9         --sf-bone                    --ground             bg-ground
-Brown/40 #b6aca6     --sf-brown-40                --border, --gray-2   border-border, border-gray-2
+Base/40 #dddcdd      --sf-base-40                 --border, --gray-2   border-border, border-gray-2
 ```
 
 Components use the utilities on the right. **Never hardcode hex, and never
@@ -104,12 +104,12 @@ on purpose.
 | `bg-card` / `bg-background` | White | Cards, pills, inputs, popovers, tooltips |
 | `bg-gray-1` | Bone/60 | Inset: KPI panels, stat chips, number inputs, table head rows |
 | `bg-muted` / `bg-secondary` | Base/20 | Tracks, segmented control backgrounds, skeletons, "soon" chips |
-| `bg-accent` | Bone/60 | Hover fill on a white surface |
+| `bg-accent` | Base/20 | Hover fill on a white surface: dashboard cards, ghost and outline buttons, menu items |
 | `text-foreground` | Brown/85 | Body reading colour (4.93:1 on Bone, 5.77:1 on white) |
 | `text-fg-4` | Base/Black | Titles and values, the strongest ink; `h1` to `h4` get it by default |
 | `text-muted-foreground` | Brown/60 | Secondary text. Labels, captions and hints only: it measures 2.71:1 on Bone and 3.17:1 on white, so never a sentence someone must read |
 | `text-label` | Brown/80 | Eyebrows and labels inside a Bone/60 inset (7.85:1) |
-| `border-border` / `border-gray-2` | Brown/40 | The hairline. Every card, pill and input carries one |
+| `border-border` / `border-gray-2` | Base/40 | The hairline. Every card, pill and input carries one |
 | `bg-primary` / `text-primary` | Brown/80 | Solid buttons, active pills, the tab underline. `text-primary-foreground` is Bone on it |
 | `bg-highlight` / `text-highlight` | Brand Red | The single highlight per view (a critical bar, one number) |
 | `text-destructive` | Brand Red | Delete icons, error text |
@@ -376,7 +376,7 @@ for sliders, checkboxes, radios.
 </button>
 ```
 
-Off is the hairline colour (Brown/40), on is Brown/80, the thumb is white.
+Off is the hairline colour (Base/40), on is Brown/80, the thumb is white.
 
 ---
 
@@ -439,7 +439,7 @@ Chart chrome follows the brand through the chart tokens in `globals.css`:
 
 | Part | Value |
 |---|---|
-| Grid lines | `stroke="var(--chart-grid)"` (Brown/40 at 50 %) |
+| Grid lines | `stroke="var(--chart-grid)"` (Base/40) |
 | Axis ticks and legend text | `fill: 'var(--chart-label)'`, `color: 'var(--chart-label)'` (Brown/60), 11 to 12 px, never bold |
 | Hover cursor (bar charts) | `cursor={{ fill: 'var(--chart-cursor)' }}` |
 | Tooltip | `chartTooltipContentStyle` from `src/lib/chartTooltip.ts`, or a custom box `bg-card border border-border rounded-xl px-3 py-2 text-sm` |
