@@ -159,14 +159,39 @@ export function parseSchedulePage(html: string): PunchpassRow[] {
 
 // ── Timezone ─────────────────────────────────────────────────────────────────
 
+// Optimization: Cache Intl.DateTimeFormat instances by timezone to avoid costly
+// re-instantiation inside parsing loops across hundreds/thousands of Punchpass rows.
+const zoneOffsetFormatterCache = new Map<string, Intl.DateTimeFormat>();
+const localPartsFormatterCache = new Map<string, Intl.DateTimeFormat>();
+
+function getZoneOffsetFormatter(timeZone: string): Intl.DateTimeFormat {
+  let formatter = zoneOffsetFormatterCache.get(timeZone);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone,
+      hour12: false,
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+    });
+    zoneOffsetFormatterCache.set(timeZone, formatter);
+  }
+  return formatter;
+}
+
+function getLocalPartsFormatter(timeZone: string): Intl.DateTimeFormat {
+  let formatter = localPartsFormatterCache.get(timeZone);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone, hour12: false, weekday: 'short', hour: '2-digit', minute: '2-digit',
+    });
+    localPartsFormatterCache.set(timeZone, formatter);
+  }
+  return formatter;
+}
+
 /** Offset of `timeZone` from UTC at `date`, in milliseconds. */
 function zoneOffsetMs(date: Date, timeZone: string): number {
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone,
-    hour12: false,
-    year: 'numeric', month: '2-digit', day: '2-digit',
-    hour: '2-digit', minute: '2-digit', second: '2-digit',
-  }).formatToParts(date);
+  const parts = getZoneOffsetFormatter(timeZone).formatToParts(date);
 
   const get = (type: string) => Number(parts.find(p => p.type === type)!.value);
   const asIfUtc = Date.UTC(
@@ -216,9 +241,7 @@ export function priceFor(startLocal: { weekday: number; hour: number }, cfg: Pun
 
 /** Venue-local weekday (0=Sun) and decimal hour for a UTC instant. */
 function localParts(instant: Date, timeZone: string): { weekday: number; hour: number } {
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone, hour12: false, weekday: 'short', hour: '2-digit', minute: '2-digit',
-  }).formatToParts(instant);
+  const parts = getLocalPartsFormatter(timeZone).formatToParts(instant);
   const val = (t: string) => parts.find(p => p.type === t)!.value;
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   return {
