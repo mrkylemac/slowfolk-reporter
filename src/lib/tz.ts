@@ -7,15 +7,28 @@
  * Bay's 24 daily slots land on the day before in UTC.
  */
 
+// Optimization: Cache Intl.DateTimeFormat instances by timezone to prevent
+// repetitive object creation when formatting date keys for large sets of sessions.
+const localDateFormatterCache = new Map<string, Intl.DateTimeFormat>();
+
+function getLocalDateFormatter(timeZone: string): Intl.DateTimeFormat {
+  let formatter = localDateFormatterCache.get(timeZone);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat('en-CA', {
+      timeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+    localDateFormatterCache.set(timeZone, formatter);
+  }
+  return formatter;
+}
+
 /** The venue-local calendar date of `date`, as `YYYY-MM-DD`. */
 export function localDateKey(date: Date, timeZone: string): string {
   // en-CA formats as YYYY-MM-DD, which is the shape we want without reassembly.
-  return new Intl.DateTimeFormat('en-CA', {
-    timeZone,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).format(date);
+  return getLocalDateFormatter(timeZone).format(date);
 }
 
 /**

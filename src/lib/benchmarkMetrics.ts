@@ -2,6 +2,47 @@ import { parseISO, differenceInDays } from 'date-fns';
 import type { MomenceSession } from '@/types/momence';
 import { formatDecimalHour } from '@/lib/utils';
 
+// Optimization: Cache Intl.DateTimeFormat instances by timezone to avoid costly
+// re-instantiation (~0.02ms each) inside hot loops processing thousands of sessions.
+const hourFormatterCache = new Map<string, Intl.DateTimeFormat>();
+const dayOfWeekFormatterCache = new Map<string, Intl.DateTimeFormat>();
+
+function getHourFormatter(timeZone: string): Intl.DateTimeFormat {
+  let formatter = hourFormatterCache.get(timeZone);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat('en-AU', {
+      timeZone,
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: false,
+    });
+    hourFormatterCache.set(timeZone, formatter);
+  }
+  return formatter;
+}
+
+function getDayOfWeekFormatter(timeZone: string): Intl.DateTimeFormat {
+  let formatter = dayOfWeekFormatterCache.get(timeZone);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat('en-AU', {
+      timeZone,
+      weekday: 'long',
+    });
+    dayOfWeekFormatterCache.set(timeZone, formatter);
+  }
+  return formatter;
+}
+
+const DAYS_LOOKUP: Record<string, number> = {
+  Sunday: 0,
+  Monday: 1,
+  Tuesday: 2,
+  Wednesday: 3,
+  Thursday: 4,
+  Friday: 5,
+  Saturday: 6,
+};
+
 /**
  * Convert an ISO timestamp to a decimal hour in the venue's local timezone.
  * Falls back to UTC if no timezone is provided or the Intl API fails.
@@ -12,12 +53,7 @@ function getLocalDecimalHour(isoString: string, timezone?: string): number {
     return date.getUTCHours() + date.getUTCMinutes() / 60;
   }
   try {
-    const parts = new Intl.DateTimeFormat('en-AU', {
-      timeZone: timezone,
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: false,
-    }).formatToParts(date);
+    const parts = getHourFormatter(timezone).formatToParts(date);
     const hour = parseInt(parts.find(p => p.type === 'hour')?.value ?? '0', 10) % 24;
     const minute = parseInt(parts.find(p => p.type === 'minute')?.value ?? '0', 10);
     return hour + minute / 60;
@@ -33,13 +69,9 @@ function getLocalDayOfWeek(isoString: string, timezone?: string): number {
   const date = new Date(isoString);
   if (!timezone) return date.getUTCDay();
   try {
-    const dayName = new Intl.DateTimeFormat('en-AU', {
-      timeZone: timezone,
-      weekday: 'long',
-    }).format(date);
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const idx = days.indexOf(dayName);
-    return idx >= 0 ? idx : date.getUTCDay();
+    const dayName = getDayOfWeekFormatter(timezone).format(date);
+    const idx = DAYS_LOOKUP[dayName];
+    return idx !== undefined ? idx : date.getUTCDay();
   } catch {
     return date.getUTCDay();
   }
