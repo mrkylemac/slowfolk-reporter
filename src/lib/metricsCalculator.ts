@@ -45,11 +45,25 @@ export function calculateMetrics(sessions: MomenceSession[], fromDate: string, t
     };
   }
 
+  let totalTicketsSold = 0;
+  let totalCapacity = 0;
+  let totalRevenue = 0;
+  let earliestStartsAt = sessions[0].startsAt;
+
+  // Single O(N) pass to accumulate totals and track the earliest session start ISO timestamp,
+  // avoiding array cloning and O(N log N) sorting.
+  for (let i = 0; i < sessions.length; i++) {
+    const s = sessions[i];
+    totalTicketsSold += s.ticketsSold;
+    totalCapacity += s.capacity;
+    totalRevenue += s.ticketsSold * s.fixedTicketPrice;
+    if (s.startsAt < earliestStartsAt) {
+      earliestStartsAt = s.startsAt;
+    }
+  }
+
   const totalSessions = sessions.length;
-  const totalTicketsSold = sessions.reduce((sum, s) => sum + s.ticketsSold, 0);
-  const totalCapacity = sessions.reduce((sum, s) => sum + s.capacity, 0);
   const avgUtilisation = totalCapacity > 0 ? (totalTicketsSold / totalCapacity) * 100 : 0;
-  const totalRevenue = sessions.reduce((sum, s) => sum + (s.ticketsSold * s.fixedTicketPrice), 0);
   const avgRevenuePerVisit = totalTicketsSold > 0 ? totalRevenue / totalTicketsSold : 0;
   const avgRevenuePerSession = totalSessions > 0 ? totalRevenue / totalSessions : 0;
 
@@ -57,11 +71,8 @@ export function calculateMetrics(sessions: MomenceSession[], fromDate: string, t
   const sessionsPerDay = daysDiff > 0 ? totalSessions / daysDiff : 0;
   const sessionsPerWeek = sessionsPerDay * 7;
 
-  const sortedSessions = [...sessions].sort((a, b) => 
-    new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()
-  );
-  const operatingSince = sortedSessions.length > 0 
-    ? format(parseISO(sortedSessions[0].startsAt), 'MMMM yyyy')
+  const operatingSince = earliestStartsAt
+    ? format(parseISO(earliestStartsAt), 'MMMM yyyy')
     : '-';
 
   return {
@@ -82,44 +93,42 @@ export function calculateMetrics(sessions: MomenceSession[], fromDate: string, t
  * Group sessions by month and calculate monthly metrics
  */
 export function calculateMonthlyData(sessions: MomenceSession[]): MonthlyData[] {
-  const monthlyMap = new Map<string, { year: number; monthIndex: number; sessions: MomenceSession[] }>();
+  const monthlyMap = new Map<string, { year: number; monthIndex: number; sessionsCount: number; ticketsSold: number; capacity: number; revenue: number }>();
 
-  sessions.forEach(session => {
+  // Single pass to accumulate monthly running totals directly without storing session objects
+  for (let i = 0; i < sessions.length; i++) {
+    const session = sessions[i];
     const date = new Date(session.startsAt);
     const year = date.getUTCFullYear();
     const monthIndex = date.getUTCMonth();
     const monthKey = `${year}-${String(monthIndex).padStart(2, '0')}`;
     
-    if (!monthlyMap.has(monthKey)) {
-      monthlyMap.set(monthKey, { year, monthIndex, sessions: [] });
+    let entry = monthlyMap.get(monthKey);
+    if (!entry) {
+      entry = { year, monthIndex, sessionsCount: 0, ticketsSold: 0, capacity: 0, revenue: 0 };
+      monthlyMap.set(monthKey, entry);
     }
-    monthlyMap.get(monthKey)!.sessions.push(session);
-  });
+    entry.sessionsCount += 1;
+    entry.ticketsSold += session.ticketsSold;
+    entry.capacity += session.capacity;
+    entry.revenue += session.ticketsSold * session.fixedTicketPrice;
+  }
 
-  const monthlyData: MonthlyData[] = [];
-  
-  monthlyMap.forEach((data, key) => {
-    const sessionsCount = data.sessions.length;
-    const ticketsSold = data.sessions.reduce((sum, s) => sum + s.ticketsSold, 0);
-    const capacity = data.sessions.reduce((sum, s) => sum + s.capacity, 0);
-    const utilisation = capacity > 0 ? (ticketsSold / capacity) * 100 : 0;
-    const revenue = data.sessions.reduce((sum, s) => sum + (s.ticketsSold * s.fixedTicketPrice), 0);
-
-    monthlyData.push({
-      month: MONTH_NAMES[data.monthIndex],
-      year: data.year,
-      sessions: sessionsCount,
-      ticketsSold,
-      capacity,
-      utilisation,
-      revenue,
-    });
-  });
-
-  return monthlyData.sort((a, b) => {
+  // Sort accumulated monthly entries by year then numeric monthIndex directly
+  const sortedEntries = Array.from(monthlyMap.values()).sort((a, b) => {
     if (a.year !== b.year) return a.year - b.year;
-    return MONTH_NAMES.indexOf(a.month as (typeof MONTH_NAMES)[number]) - MONTH_NAMES.indexOf(b.month as (typeof MONTH_NAMES)[number]);
+    return a.monthIndex - b.monthIndex;
   });
+
+  return sortedEntries.map(data => ({
+    month: MONTH_NAMES[data.monthIndex],
+    year: data.year,
+    sessions: data.sessionsCount,
+    ticketsSold: data.ticketsSold,
+    capacity: data.capacity,
+    utilisation: data.capacity > 0 ? (data.ticketsSold / data.capacity) * 100 : 0,
+    revenue: data.revenue,
+  }));
 }
 
 /**
