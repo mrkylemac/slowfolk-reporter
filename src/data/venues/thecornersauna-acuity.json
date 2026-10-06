@@ -5,9 +5,9 @@
   "venueName": "The Corner Sauna",
   "dateRange": {
     "from": "2026-03-06T07:00:00.000Z",
-    "to": "2026-10-27T07:00:00.000Z"
+    "to": "2026-11-03T07:00:00.000Z"
   },
-  "cachedAt": "2026-10-06T06:48:09.791Z",
+  "cachedAt": "2026-10-06T07:02:34.540Z",
   "sessions": [
     {
       "id": "acuity-71669392-11172572-2026-03-06T18:00:00+1100",
@@ -10550,6 +10550,18 @@
       "sessionName": "Women's Wellness Session",
       "startsAt": "2026-10-27T07:00:00.000Z",
       "endsAt": "2026-10-27T08:00:00.000Z",
+      "durationMinutes": 60,
+      "capacity": 8,
+      "ticketsSold": 0,
+      "fixedTicketPrice": 40,
+      "location": "",
+      "inPerson": true
+    },
+    {
+      "id": "acuity-80179076-11172572-2026-11-03T18:00:00+1100",
+      "sessionName": "Women's Wellness Session",
+      "startsAt": "2026-11-03T07:00:00.000Z",
+      "endsAt": "2026-11-03T08:00:00.000Z",
       "durationMinutes": 60,
       "capacity": 8,
       "ticketsSold": 0,
