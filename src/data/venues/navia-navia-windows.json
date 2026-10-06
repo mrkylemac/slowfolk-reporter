@@ -7,7 +7,7 @@
     "from": "2026-08-14T07:00:00.000Z",
     "to": "2026-10-08T10:00:00.000Z"
   },
-  "cachedAt": "2026-10-06T06:17:45.973Z",
+  "cachedAt": "2026-10-06T06:32:34.967Z",
   "sessions": [
     {
       "id": "navia-1-2026-08-14T07:00:00.000Z",
@@ -17420,7 +17420,14 @@
       "soldSource": "reported",
       "measure": "seats",
       "capacitySource": "derived-grid",
-      "confidence": "medium"
+      "confidence": "medium",
+      "supersededSold": {
+        "ticketsSold": 12,
+        "source": "slot-feed",
+        "reason": "cancelled-after-reading",
+        "note": "We recorded 12 before the sitting started and Navia now has 11. Treated as bookings cancelled after our reading. Navia's figure is used, decided 2026-09-13. Our count is kept here so that can be revisited.",
+        "decidedOn": "2026-09-13"
+      }
     },
     {
       "id": "navia-2-2026-10-06T06:00:00.000Z",
@@ -17429,7 +17436,7 @@
       "endsAt": "2026-10-06T07:00:00.000Z",
       "durationMinutes": 60,
       "capacity": 32,
-      "ticketsSold": 5,
+      "ticketsSold": 7,
       "fixedTicketPrice": 0,
       "location": "Prahran",
       "inPerson": true,
