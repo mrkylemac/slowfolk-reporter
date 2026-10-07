@@ -7,7 +7,7 @@
     "from": "2026-08-14T07:00:00.000Z",
     "to": "2026-11-10T10:00:00.000Z"
   },
-  "cachedAt": "2026-10-07T02:47:19.649Z",
+  "cachedAt": "2026-10-07T03:03:00.742Z",
   "sessions": [
     {
       "id": "navia-1-2026-08-14T07:00:00.000Z",
@@ -43894,6 +43894,23 @@
       "confidence": "low"
     },
     {
+      "id": "navia-2-2026-10-04T03:15:00.000Z",
+      "sessionName": "Bathing",
+      "startsAt": "2026-10-04T03:15:00.000Z",
+      "endsAt": "2026-10-04T04:15:00.000Z",
+      "durationMinutes": 60,
+      "capacity": 0,
+      "ticketsSold": 0,
+      "fixedTicketPrice": 0,
+      "location": "Prahran",
+      "inPerson": true,
+      "utilisationKnown": false,
+      "capacitySource": "unknown",
+      "soldSource": "unknown",
+      "measure": "seats",
+      "confidence": "low"
+    },
+    {
       "id": "navia-1-2026-10-04T04:00:00.000Z",
       "sessionName": "Bathing",
       "startsAt": "2026-10-04T04:00:00.000Z",
@@ -44900,7 +44917,7 @@
       "startsAt": "2026-10-07T04:00:00.000Z",
       "endsAt": "2026-10-07T06:00:00.000Z",
       "durationMinutes": 120,
-      "capacity": 16,
+      "capacity": 15,
       "ticketsSold": 15,
       "fixedTicketPrice": 80,
       "location": "Byron Bay",
@@ -44948,8 +44965,8 @@
       "startsAt": "2026-10-07T06:00:00.000Z",
       "endsAt": "2026-10-07T08:00:00.000Z",
       "durationMinutes": 120,
-      "capacity": 16,
-      "ticketsSold": 7,
+      "capacity": 15,
+      "ticketsSold": 9,
       "fixedTicketPrice": 80,
       "location": "Byron Bay",
       "inPerson": true,
@@ -45744,22 +45761,6 @@
       "soldSource": "unknown",
       "measure": "seats",
       "confidence": "low"
-    },
-    {
-      "id": "navia-2-2026-10-10T03:00:00.000Z",
-      "sessionName": "Bathing",
-      "startsAt": "2026-10-10T03:00:00.000Z",
-      "endsAt": "2026-10-10T04:00:00.000Z",
-      "durationMinutes": 60,
-      "capacity": 32,
-      "ticketsSold": 4,
-      "fixedTicketPrice": 0,
-      "location": "Prahran",
-      "inPerson": true,
-      "capacitySource": "derived-grid",
-      "soldSource": "derived-grid",
-      "measure": "seats",
-      "confidence": "medium"
     },
     {
       "id": "navia-1-2026-10-10T04:00:00.000Z",
