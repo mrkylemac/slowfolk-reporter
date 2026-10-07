@@ -7,7 +7,7 @@
     "from": "2026-08-14T07:00:00.000Z",
     "to": "2026-10-10T10:00:00.000Z"
   },
-  "cachedAt": "2026-10-07T19:17:29.903Z",
+  "cachedAt": "2026-10-07T19:32:48.844Z",
   "sessions": [
     {
       "id": "navia-1-2026-08-14T07:00:00.000Z",
@@ -17895,7 +17895,7 @@
       "endsAt": "2026-10-07T22:00:00.000Z",
       "durationMinutes": 120,
       "capacity": 16,
-      "ticketsSold": 3,
+      "ticketsSold": 4,
       "fixedTicketPrice": 80,
       "location": "Byron Bay",
       "inPerson": true,
@@ -18135,7 +18135,7 @@
       "endsAt": "2026-10-08T08:00:00.000Z",
       "durationMinutes": 120,
       "capacity": 16,
-      "ticketsSold": 13,
+      "ticketsSold": 14,
       "fixedTicketPrice": 80,
       "location": "Byron Bay",
       "inPerson": true,
