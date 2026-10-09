@@ -57,12 +57,18 @@ export function calculateMetrics(sessions: MomenceSession[], fromDate: string, t
   const sessionsPerDay = daysDiff > 0 ? totalSessions / daysDiff : 0;
   const sessionsPerWeek = sessionsPerDay * 7;
 
-  const sortedSessions = [...sessions].sort((a, b) => 
-    new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime()
-  );
-  const operatingSince = sortedSessions.length > 0 
-    ? format(parseISO(sortedSessions[0].startsAt), 'MMMM yyyy')
-    : '-';
+  // Optimization: Find earliest session timestamp in O(N) time with string comparison
+  // instead of copying array and doing an O(N log N) sort with Date parsing.
+  let operatingSince = '-';
+  if (sessions.length > 0) {
+    let earliestStartsAt = sessions[0].startsAt;
+    for (let i = 1; i < sessions.length; i++) {
+      if (sessions[i].startsAt < earliestStartsAt) {
+        earliestStartsAt = sessions[i].startsAt;
+      }
+    }
+    operatingSince = format(parseISO(earliestStartsAt), 'MMMM yyyy');
+  }
 
   return {
     totalSessions,
