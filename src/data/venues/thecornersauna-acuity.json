@@ -7,7 +7,7 @@
     "from": "2026-03-06T07:00:00.000Z",
     "to": "2026-11-03T07:00:00.000Z"
   },
-  "cachedAt": "2026-10-10T06:47:06.956Z",
+  "cachedAt": "2026-10-10T07:02:21.216Z",
   "sessions": [
     {
       "id": "acuity-71669392-11172572-2026-03-06T18:00:00+1100",
@@ -10646,6 +10646,54 @@
       "sessionName": "Single Session",
       "startsAt": "2026-10-15T07:00:00.000Z",
       "endsAt": "2026-10-15T08:00:00.000Z",
+      "durationMinutes": 60,
+      "capacity": 8,
+      "ticketsSold": 0,
+      "fixedTicketPrice": 40,
+      "location": "",
+      "inPerson": true
+    },
+    {
+      "id": "acuity-71669392-11172572-2026-10-16T15:00:00+1100",
+      "sessionName": "Single Session",
+      "startsAt": "2026-10-16T04:00:00.000Z",
+      "endsAt": "2026-10-16T05:00:00.000Z",
+      "durationMinutes": 60,
+      "capacity": 8,
+      "ticketsSold": 0,
+      "fixedTicketPrice": 40,
+      "location": "",
+      "inPerson": true
+    },
+    {
+      "id": "acuity-71669392-11172572-2026-10-16T16:00:00+1100",
+      "sessionName": "Single Session",
+      "startsAt": "2026-10-16T05:00:00.000Z",
+      "endsAt": "2026-10-16T06:00:00.000Z",
+      "durationMinutes": 60,
+      "capacity": 8,
+      "ticketsSold": 2,
+      "fixedTicketPrice": 40,
+      "location": "",
+      "inPerson": true
+    },
+    {
+      "id": "acuity-71669392-11172572-2026-10-16T17:00:00+1100",
+      "sessionName": "Single Session",
+      "startsAt": "2026-10-16T06:00:00.000Z",
+      "endsAt": "2026-10-16T07:00:00.000Z",
+      "durationMinutes": 60,
+      "capacity": 8,
+      "ticketsSold": 0,
+      "fixedTicketPrice": 40,
+      "location": "",
+      "inPerson": true
+    },
+    {
+      "id": "acuity-71669392-11172572-2026-10-16T18:00:00+1100",
+      "sessionName": "Single Session",
+      "startsAt": "2026-10-16T07:00:00.000Z",
+      "endsAt": "2026-10-16T08:00:00.000Z",
       "durationMinutes": 60,
       "capacity": 8,
       "ticketsSold": 0,
